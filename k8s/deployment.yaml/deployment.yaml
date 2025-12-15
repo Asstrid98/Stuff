@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: Taylinn
+  labels:
+    app: Taylinn
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: Taylinn
+  template:
+    metadata:
+      labels:
+        app: Taylinn
+    spec:
+      containers:
+      - name: python-app
+        # Esta imagen la creará GitHub automáticamente
+        image: ghcr.io/Saronos/Taylinn:latest 
+        ports:
+        - containerPort: 5000
+        imagePullPolicy: Always
+        env:
+        - name: MODO_OPERATIVO
+          value: "NORMAL"
+        livenessProbe: # El sistema vigilará si la app responde
+          httpGet:
+            path: /health
+            port: 5000
+          initialDelaySeconds: 10
+          periodSeconds: 10
