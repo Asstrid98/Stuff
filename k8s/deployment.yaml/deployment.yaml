@@ -1,23 +1,23 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: Taylinn
+  name: taylinn
   labels:
-    app: Taylinn
+    app: taylinn
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: Taylinn
+      app: taylinn
   template:
     metadata:
       labels:
-        app: Taylinn
+        app: taylinn
     spec:
       containers:
       - name: python-app
         # Esta imagen la creará GitHub automáticamente
-        image: ghcr.io/Saronos/Taylinn:latest 
+        image: ghcr.io/saronos/taylinn:latest 
         ports:
         - containerPort: 5000
         imagePullPolicy: Always
