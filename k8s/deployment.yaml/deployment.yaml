@@ -5,7 +5,7 @@ metadata:
   labels:
     app: taylinn
 spec:
-  replicas: 1
+  replicas: 1  # Empezamos con 1 pod
   selector:
     matchLabels:
       app: taylinn
@@ -16,17 +16,15 @@ spec:
     spec:
       containers:
       - name: python-app
-        # Esta imagen la creará GitHub automáticamente
+        # OJO: Aquí debe poner la dirección de SU imagen (ghcr.io/usuario/...)
         image: ghcr.io/saronos/taylinn:latest 
         ports:
         - containerPort: 5000
         imagePullPolicy: Always
-        env:
-        - name: MODO_OPERATIVO
-          value: "NORMAL"
-        livenessProbe: # El sistema vigilará si la app responde
+        # Health Checks (Vital para DevOps)
+        livenessProbe:
           httpGet:
             path: /health
             port: 5000
-          initialDelaySeconds: 10
+          initialDelaySeconds: 5
           periodSeconds: 10
