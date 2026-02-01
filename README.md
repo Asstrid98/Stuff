@@ -1292,7 +1292,7 @@ trivy image url-shortener:local
 
 ---
 
-## Fase 4: Manifiestos de Kubernetes (Done ✔ 30/01/2026)
+## Fase 4: Manifiestos de Kubernetes (Done ✔ 1/2/2026)
 
 ### 🎯 Objetivo
 Crear los manifiestos de Kubernetes para desplegar tu aplicación.
