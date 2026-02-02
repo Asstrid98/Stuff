@@ -1,19 +1,11 @@
 # Default values for url-shortener
 
-# Default values for url-shortener
-
 replicaCount: 2
 
 image:
-  repository: quay.io/asstrid98/url-shortener  # Confirma que este sea tu usuario de Quay
-  pullPolicy: Always
-  tag: "latest"
-
-database:
-  user: asstrid98
-  password: password123
-  name: urlshortener
-  host: postgresql
+  repository: ghcr.io/TU-USUARIO/url-shortener
+  tag: latest
+  pullPolicy: IfNotPresent
 
 service:
   type: ClusterIP
@@ -38,10 +30,9 @@ database:
   enabled: true
   host: postgresql
   port: 5432
-  # IMPORTANTE: Asegúrate de que estos coincidan con el Secret de postgresql.yaml
   name: urlshortener
-  user: asstrid98
-  password: password123
+  user: urlshortener
+  password: password123  # Override en producción
 
 postgresql:
   enabled: true
@@ -53,9 +44,8 @@ cronjob:
 
 probes:
   liveness:
-    # Aumentamos un poco el tiempo para dar margen a la conexión inicial
-    initialDelaySeconds: 15
+    initialDelaySeconds: 10
     periodSeconds: 10
   readiness:
-    initialDelaySeconds: 10
+    initialDelaySeconds: 5
     periodSeconds: 5
