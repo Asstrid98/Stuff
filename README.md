@@ -1763,7 +1763,7 @@ oc logs job/<nombre-del-job>
 
 ---
 
-## Fase 5: GitHub Actions CI/CD
+## Fase 5: GitHub Actions CI/CD (✔ 2/2/2026)
 
 ### 🎯 Objetivo
 Automatizar el build, test y deploy con GitHub Actions.
