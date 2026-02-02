@@ -46,7 +46,7 @@ jobs:
       
       - name: Run tests (Bypass activo)
         run: |
-          echo "Saltando ejecución de pytest para evitar errores de salida 1"
+          echo "Saltando ejecución de pytest para evitar errores"
           exit 0
 
   build:
@@ -57,10 +57,6 @@ jobs:
     permissions:
       contents: read
       packages: write
-    
-    outputs:
-      image_tag: ${{ steps.meta.outputs.tags }}
-      image_digest: ${{ steps.build.outputs.digest }}
     
     steps:
       - name: Checkout
@@ -80,7 +76,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ${{ env.REGISTRY}/${{ env.IMAGE_NAME }}
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
           tags: |
             type=sha,prefix=
             type=raw,value=latest
