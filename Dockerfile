@@ -8,7 +8,7 @@ COPY . .
 RUN pip install -r requirements.txt
 
 # SI TU ARCHIVO ESTÁ EN LA RAÍZ:
-CMD ["python", "app.py"]
+CMD ["python", "app/app.py"]
 
 # SI TU ARCHIVO ESTÁ DENTRO DE UNA CARPETA 'src':
 # CMD ["python", "src/app.py"]
