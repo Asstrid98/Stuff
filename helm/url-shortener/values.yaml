@@ -5,9 +5,15 @@
 replicaCount: 2
 
 image:
-  repository: ghcr.io/asstrid98/url-shortener
-  tag: latest
-  pullPolicy: IfNotPresent
+  repository: quay.io/asstrid98/url-shortener  # Confirma que este sea tu usuario de Quay
+  pullPolicy: Always
+  tag: "latest"
+
+database:
+  user: asstrid98
+  password: password123
+  name: urlshortener
+  host: postgresql
 
 service:
   type: ClusterIP
