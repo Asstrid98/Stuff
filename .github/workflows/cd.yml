@@ -22,7 +22,7 @@ jobs:
       - name: Install OpenShift CLI
         uses: redhat-actions/oc-installer@v1
         with:
-          oc_version: '4.12'
+          oc_version: '4.14' # Cambiado de 4.12 a 4.14 para evitar el error 404
       
       - name: Login to OpenShift
         run: |
