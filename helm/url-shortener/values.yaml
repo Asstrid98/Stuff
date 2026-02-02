@@ -1,11 +1,14 @@
 # Default values for url-shortener
 
+# Default values for url-shortener
+
 replicaCount: 2
 
 image:
   repository: ghcr.io/asstrid98/url-shortener
   tag: latest
   pullPolicy: IfNotPresent
+
 service:
   type: ClusterIP
   port: 5000
@@ -29,9 +32,10 @@ database:
   enabled: true
   host: postgresql
   port: 5432
+  # IMPORTANTE: Asegúrate de que estos coincidan con el Secret de postgresql.yaml
   name: urlshortener
-  user: urlshortener
-  password: password123  # Override en producción
+  user: user123
+  password: password123
 
 postgresql:
   enabled: true
@@ -43,8 +47,9 @@ cronjob:
 
 probes:
   liveness:
-    initialDelaySeconds: 10
+    # Aumentamos un poco el tiempo para dar margen a la conexión inicial
+    initialDelaySeconds: 15
     periodSeconds: 10
   readiness:
-    initialDelaySeconds: 5
+    initialDelaySeconds: 10
     periodSeconds: 5
