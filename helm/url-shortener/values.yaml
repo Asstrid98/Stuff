@@ -3,7 +3,7 @@
 replicaCount: 2
 
 image:
-  repository: quay.io/asstrid98/url-shortener
+  repository: ghcr.io/asstrid98/url-shortener
   tag: "latest"
   pullPolicy: Always
 
