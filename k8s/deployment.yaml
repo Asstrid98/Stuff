@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: url-shortener
-          image: ghcr.io/Asstrid98/url-shortener:latest
+          image: quay.io/Asstrid98/url-shortener:latest
           ports:
             - containerPort: 5000
               protocol: TCP
