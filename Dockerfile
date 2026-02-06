@@ -36,6 +36,7 @@ COPY --chown=appuser:appuser app/ ./app/
 
 # Configurar entorno
 ENV PATH=/home/appuser/.local/bin:$PATH
+ENV PYTHONPATH=/home/appuser/.local/lib/python3.11/site-packages
 ENV PYTHONUNBUFFERED=1
 
 # Cambiar a usuario no-root
