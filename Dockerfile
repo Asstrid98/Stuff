@@ -13,7 +13,7 @@ RUN apt-get update && apt-get install -y \
 
 # Copiar requirements e instalar dependencias
 COPY requirements.txt .
-RUN pip install --no-cache-dir --user -r requirements.txt
+RUN pip install --no-cache-dir -r requirements.txt
 
 # ============================================
 # Stage 2: Runtime
@@ -29,13 +29,13 @@ RUN apt-get update && apt-get install -y \
     && useradd --create-home --shell /bin/bash appuser
 
 # Copiar dependencias instaladas del builder
-COPY --from=builder /root/.local /home/appuser/.local
+COPY --from=builder /usr/local/lib/python3.11/site-packages /usr/local/lib/python3.11/site-packages
+COPY --from=builder /usr/local/bin/gunicorn /usr/local/bin/gunicorn
 
 # Copiar código de la aplicación
 COPY --chown=appuser:appuser app/ ./app/
 
 # Configurar entorno
-ENV PATH=/home/appuser/.local/bin:$PATH
 ENV PYTHONPATH=/home/appuser/.local/lib/python3.11/site-packages
 ENV PYTHONUNBUFFERED=1
 
