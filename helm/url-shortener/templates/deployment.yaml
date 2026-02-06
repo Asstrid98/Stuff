@@ -22,7 +22,7 @@ spec:
           command: ["/bin/sh", "-c"]
           args:
             - |
-              pip install flask flask-sqlalchemy psycopg2-binary
+              --user flask flask-sqlalchemy psycopg2-binary gunicorn
               python -m app.app
           # ----------------------------------------------------
           ports:
@@ -39,11 +39,11 @@ spec:
             httpGet:
               path: /health/live
               port: 5000
-            initialDelaySeconds: {{ .Values.probes.liveness.initialDelaySeconds }}
+            initialDelaySeconds: 30
             periodSeconds: {{ .Values.probes.liveness.periodSeconds }}
           readinessProbe:
             httpGet:
               path: /health/ready
               port: 5000
-            initialDelaySeconds: {{ .Values.probes.readiness.initialDelaySeconds }}
+            initialDelaySeconds: 25
             periodSeconds: {{ .Values.probes.readiness.periodSeconds }}

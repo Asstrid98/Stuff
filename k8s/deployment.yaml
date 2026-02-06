@@ -16,11 +16,7 @@ spec:
     spec:
       containers:
         - name: url-shortener
-          image: ghcr.io/asstrid98/url-shortener:latest
-          # --- AQUÍ ESTÁ EL ARREGLO ---
-          command: ["python"]
-          args: ["-m", "app.app"] 
-          # ----------------------------
+          image: ghcr.io/asstrid98/stuff:latest
           ports:
             - containerPort: 5000
               protocol: TCP
@@ -40,11 +36,11 @@ spec:
             httpGet:
               path: /health/live
               port: 5000
-            initialDelaySeconds: 20 # Aumentamos un poco el tiempo para que le dé tiempo a conectar a la DB
+            initialDelaySeconds: 30 # Aumentamos un poco el tiempo para que le dé tiempo a conectar a la DB
             periodSeconds: 10
           readinessProbe:
             httpGet:
               path: /health/ready
               port: 5000
-            initialDelaySeconds: 15
+            initialDelaySeconds: 25
             periodSeconds: 5
