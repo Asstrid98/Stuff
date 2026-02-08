@@ -7,9 +7,9 @@ metadata:
     app: postgresql
 type: Opaque
 stringData:
-  POSTGRES_USER: urlshortener
-  POSTGRES_PASSWORD: password123
-  POSTGRES_DB: urlshortener
+  POSTGRESQL_USERNAME: urlshortener
+  POSTGRESQL_PASSWORD: password123
+  POSTGRESQL_DATABASE: urlshortener
 
 ---
 apiVersion: v1
@@ -46,7 +46,7 @@ spec:
     spec:
       containers:
         - name: postgresql
-          image: postgres:15-alpine
+          image: bitnami/postgresql:15
           ports:
             - containerPort: 5432
           envFrom:
@@ -54,7 +54,7 @@ spec:
                 name: postgresql-secret
           volumeMounts:
             - name: postgresql-data
-              mountPath: /var/lib/postgresql/data
+              mountPath: /bitnami/postgresql
           resources:
             requests:
               memory: "128Mi"
