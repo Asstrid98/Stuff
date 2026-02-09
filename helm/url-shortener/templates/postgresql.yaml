@@ -8,9 +8,9 @@ metadata:
     {{- include "url-shortener.labels" . | nindent 4 }}
 type: Opaque
 stringData:
-  POSTGRES_USER: {{ .Values.database.user }}
-  POSTGRES_PASSWORD: {{ .Values.database.password }}
-  POSTGRES_DB: {{ .Values.database.name }}
+  POSTGRESQL_USERNAME: {{ .Values.database.user }}
+  POSTGRESQL_PASSWORD: {{ .Values.database.password }}
+  POSTGRESQL_DATABASE: {{ .Values.database.name }}
 
 ---
 apiVersion: v1
@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: postgresql
-          image: postgres:15-alpine
+          image: bitnami/postgresql:15
           ports:
             - containerPort: 5432
           envFrom:
@@ -56,7 +56,7 @@ spec:
                 name: postgresql-secret
           volumeMounts:
             - name: postgresql-data
-              mountPath: /var/lib/postgresql/data
+              mountPath: /bitnami/postgresql
           resources:
             requests:
               memory: "128Mi"
@@ -64,6 +64,22 @@ spec:
             limits:
               memory: "256Mi"
               cpu: "500m"
+          livenessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - {{ .Values.database.user }}
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          readinessProbe:
+            exec:
+              command:
+                - pg_isready
+                - -U
+                - {{ .Values.database.user }}
+            initialDelaySeconds: 5
+            periodSeconds: 5
       volumes:
         - name: postgresql-data
           persistentVolumeClaim:
