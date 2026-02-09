@@ -8,10 +8,10 @@ on:
 
 env:
   REGISTRY: ghcr.io
-  IMAGE_NAME: asstrid98/stuff
+  IMAGE_NAME: ${{ github.repository }}
 
 jobs:
-  deploy:
+  deploy-dev:
     runs-on: ubuntu-latest
     if: ${{ github.event.workflow_run.conclusion == 'success' }}
     
@@ -22,7 +22,12 @@ jobs:
       - name: Install OpenShift CLI
         uses: redhat-actions/oc-installer@v1
         with:
-          oc_version: 'latest'
+          oc_version: '4.12'
+      
+      - name: Install Helm
+        uses: azure/setup-helm@v3
+        with:
+          version: '3.13.0'
       
       - name: Login to OpenShift
         run: |
@@ -32,35 +37,21 @@ jobs:
         run: |
           echo "IMAGE_TAG=$(git rev-parse --short HEAD)" >> $GITHUB_ENV
       
-      - name: Deploy to OpenShift
+      - name: Deploy with Helm
         run: |
-          # Actualizar imagen en deployment
-          oc set image deployment/url-shortener \
-            url-shortener=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.IMAGE_TAG }} \
-            --record
-          
-          # Esperar a que el rollout termine
-          oc rollout status deployment/url-shortener --timeout=300s
+          helm upgrade --install url-shortener ./helm/url-shortener \
+            -f ./helm/url-shortener/values-dev.yaml \
+            --set image.repository=${{ env.REGISTRY }}/${{ env.IMAGE_NAME }} \
+            --set image.tag=${{ env.IMAGE_TAG }} \
+            --wait \
+            --timeout 300s
       
-          # Esperar a que los pods estén listos
-          oc wait --for=condition=ready pod -l app=url-shortener --timeout=120s
-
       - name: Verify deployment
         run: |
-          # Obtener la URL de la route
           ROUTE_URL=$(oc get route url-shortener -o jsonpath='{.spec.host}')
-          echo "Application URL: https://$ROUTE_URL"
+          echo "🚀 Application URL: https://$ROUTE_URL"
           
-          # Verificar health check
-          for i in 1 2 3; do
-            if curl -f https://$ROUTE_URL/health/live; then
-              echo "✅ Deployment successful!"
-              exit 0
-            fi
-              echo "Intento $i fallido, esperando..."
-              sleep 10
-          done
-
-          echo "❌ Deployment failed after 3 attempts."
-          exit 1
+          sleep 10
           
+          curl -sf https://$ROUTE_URL/health/live || exit 1
+          echo "✅ Deployment successful!"
