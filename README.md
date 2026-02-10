@@ -3,7 +3,7 @@
 
 ## Tu Misión DevOps
 
-Vas a construir **desde cero** un acortador de URLs (tipo bit.ly) y desplegarlo en OpenShift con todo lo que has aprendido.
+Vas a construir **desde cero** un acortador de URLs (tipo bit.ly) y desplegarlo en OpenShift con todo lo que has aprendido. 
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
