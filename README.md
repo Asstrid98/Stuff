@@ -2718,6 +2718,29 @@ Modificar el pipeline para desplegar usando Helm.
 
 ### 📝 Tareas
 
+### ANTES DE CONTINUAR, BORRA INSTALACIONES ANTIGUAS QUE HICISTE MANUALMENTE
+
+Previamente a esta fase, hiciste despliegues e instalaciones manuales con "oc apply -f..." ahora esos despliegues se hacen solos con Helm, pero dará error en el CD si ejecutas el workflow porque verá que ya existen
+los recursos, porque, como digo, ya los instalaste mediante comando en la terminal. Ahora hay que borrarlos para que a partir de ahora lo gestione Helm:
+
+``` # 1. Limpiar el release fallido de Helm
+helm uninstall url-shortener
+
+# 2. Borrar los recursos manuales de PostgreSQL
+oc delete deployment postgresql
+oc delete service postgresql
+oc delete secret postgresql-secret
+oc delete pvc postgresql-pvc
+
+# 3. Helm crea TODO desde cero (incluido PostgreSQL)
+helm upgrade --install url-shortener ./helm/url-shortener \
+  -f ./helm/url-shortener/values-dev.yaml \
+  --set image.tag=$(git rev-parse --short HEAD) \
+  --wait \
+  --timeout 300s
+```
+
+
 #### 7.1 Actualiza `.github/workflows/cd.yml`
 
 ```yaml
