@@ -11,9 +11,9 @@ RUN apt-get update && apt-get install -y \
     libpq-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# Copiar requirements e instalar dependencias con --user
+# Copiar requirements e instalar dependencias con --prefix
 COPY requirements.txt .
-RUN pip install --no-cache-dir --user -r requirements.txt
+RUN pip install --no-cache-dir --prefix=/install -r requirements.txt
 
 # ============================================
 # Stage 2: Runtime
@@ -25,22 +25,16 @@ WORKDIR /app
 # Instalar solo runtime dependencies
 RUN apt-get update && apt-get install -y \
     libpq5 \
-    && rm -rf /var/lib/apt/lists/* \
-    && useradd --create-home --shell /bin/bash appuser
+    && rm -rf /var/lib/apt/lists/*
 
-# Copiar dependencias instaladas del builder (--user instala en /root/.local)
-COPY  --from=builder /root/.local /home/appuser/.local
-RUN chmod -R 755 /home/appuser/.local
+# Copiar dependencias instaladas del builder
+COPY --from=builder /install /usr/local
 
 # Copiar código de la aplicación
-COPY --chown=appuser:appuser app/ ./app/
+COPY app/ ./app/
 
 # Configurar entorno
-ENV PATH=/home/appuser/.local/bin:$PATH
 ENV PYTHONUNBUFFERED=1
-
-# Cambiar a usuario no-root
-USER appuser
 
 # Puerto
 EXPOSE 5000
