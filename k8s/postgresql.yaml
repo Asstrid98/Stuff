@@ -7,7 +7,7 @@ metadata:
     app: postgresql
 type: Opaque
 stringData:
-  POSTGRESQL_USERNAME: urlshortener
+  POSTGRESQL_USER: urlshortener
   POSTGRESQL_PASSWORD: password123
   POSTGRESQL_DATABASE: urlshortener
 
@@ -46,7 +46,7 @@ spec:
     spec:
       containers:
         - name: postgresql
-          image: bitnami/postgresql:15
+          image: image-registry.openshift-image-registry.svc:5000/openshift/postgresql:15-el9
           ports:
             - containerPort: 5432
           envFrom:
@@ -54,7 +54,7 @@ spec:
                 name: postgresql-secret
           volumeMounts:
             - name: postgresql-data
-              mountPath: /bitnami/postgresql
+              mountPath: /var/lib/pgsql/data
           resources:
             requests:
               memory: "128Mi"

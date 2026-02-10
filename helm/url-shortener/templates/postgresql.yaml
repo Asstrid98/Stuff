@@ -8,7 +8,7 @@ metadata:
     {{- include "url-shortener.labels" . | nindent 4 }}
 type: Opaque
 stringData:
-  POSTGRESQL_USERNAME: {{ .Values.database.user }}
+  POSTGRESQL_USER: {{ .Values.database.user }}
   POSTGRESQL_PASSWORD: {{ .Values.database.password }}
   POSTGRESQL_DATABASE: {{ .Values.database.name }}
 
@@ -48,7 +48,7 @@ spec:
     spec:
       containers:
         - name: postgresql
-          image: bitnami/postgresql:15
+          image: image-registry.openshift-image-registry.svc:5000/openshift/postgresql:15-el9
           ports:
             - containerPort: 5432
           envFrom:
@@ -56,7 +56,7 @@ spec:
                 name: postgresql-secret
           volumeMounts:
             - name: postgresql-data
-              mountPath: /bitnami/postgresql
+              mountPath: /var/lib/pgsql/data
           resources:
             requests:
               memory: "128Mi"

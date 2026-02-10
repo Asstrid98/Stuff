@@ -29,7 +29,8 @@ RUN apt-get update && apt-get install -y \
     && useradd --create-home --shell /bin/bash appuser
 
 # Copiar dependencias instaladas del builder (--user instala en /root/.local)
-COPY --from=builder /root/.local /home/appuser/.local
+COPY  --from=builder /root/.local /home/appuser/.local
+RUN chmod -R 755 /home/appuser/.local
 
 # Copiar código de la aplicación
 COPY --chown=appuser:appuser app/ ./app/
