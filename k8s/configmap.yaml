@@ -5,4 +5,4 @@ metadata:
   labels:
     app: url-shortener
 data:
-  BASE_URL: "https://url-shortener-<TU-NAMESPACE>.apps.sandbox-xxx.openshiftapps.com"
+  BASE_URL: "https://url-shortener-asstrid-dev.apps.rm3.7wse.p1.openshiftapps.com"
