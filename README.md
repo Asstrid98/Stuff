@@ -2723,7 +2723,10 @@ Modificar el pipeline para desplegar usando Helm.
 Previamente a esta fase, hiciste despliegues e instalaciones manuales con "oc apply -f..." ahora esos despliegues se hacen solos con Helm, pero dará error en el CD si ejecutas el workflow porque verá que ya existen
 los recursos, porque, como digo, ya los instalaste mediante comando en la terminal. Ahora hay que borrarlos para que a partir de ahora lo gestione Helm:
 
-``` # 1. Limpiar el release fallido de Helm
+En la terminal bash de visual studio, mete esto:
+
+```
+# 1. Limpiar el release fallido de Helm
 helm uninstall url-shortener
 
 # 2. Borrar los recursos manuales de PostgreSQL
@@ -2740,6 +2743,7 @@ helm upgrade --install url-shortener ./helm/url-shortener \
   --timeout 300s
 ```
 
+Ahora sí, puedes continuar.
 
 #### 7.1 Actualiza `.github/workflows/cd.yml`
 
